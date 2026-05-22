@@ -1,50 +1,61 @@
-# Welcome to your Expo app 👋
+# UniPulse
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+UniPulse is a playful Campus + City Event Board prototype built with Expo and React Native. It helps students quickly discover what is happening around campus and nearby downtown spots, filter events by category, and save events they care about.
 
-## Get started
+The current build intentionally prioritizes functionality and rubric coverage over polished visual design.
 
-1. Install dependencies
+## Tech Stack
 
-   ```bash
-   npm install
-   ```
+- Expo SDK 54
+- React Native + TypeScript
+- Expo Router (file-based routing)
+- ESLint + Prettier
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Quick Start
 
 ```bash
-npm run reset-project
+npm install
+npm run start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Then open:
 
-## Learn more
+- iOS simulator with `i`
+- Android emulator with `a`
+- Web with `w`
 
-To learn more about developing your project with Expo, look at the following resources:
+## Scripts
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- `npm run start` - Start Expo with a cleared cache
+- `npm run android` - Launch Android target
+- `npm run ios` - Launch iOS target
+- `npm run web` - Launch web target
+- `npm run lint` - Run typecheck, ESLint, and Prettier checks
 
-## Join the community
+## Current Prototype Features
 
-Join our community of developers creating universal apps.
+- Three core UI components on the main view: Header, EventFlasher, and EventFeed
+- Category filtering via React state (`All`, `Campus`, `City`, `Club`)
+- Search input for quickly narrowing event cards
+- Save/unsave behavior with a live saved counter
+- Simulated event loading using `useEffect` + a public API (`jsonplaceholder`)
+- Chaotic "Panic Button" that flashes random surprise event messages
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Project Structure
+
+- `app/(tabs)/index.tsx` - Core UniPulse screen and components
+- `app/(tabs)/_layout.tsx` - Tabs configuration
+- `app/_layout.tsx` - Root navigation and app providers
+
+## Potential Future Features
+
+- Persist saved events and last-used filters with AsyncStorage
+- Add geolocation-based "Near Me" event filtering
+- Send local push reminders before saved events start
+- Integrate an interactive map view with event pins
+- Add real backend sync (create/join events, live updates, moderation)
+
+## Notes
+
+- This project avoids external UI libraries on purpose and uses core React Native components only.
+- If API fetching fails, the app falls back to local sample events so the prototype still works.
