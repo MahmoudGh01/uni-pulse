@@ -2,6 +2,11 @@
   "name": "uni-pulse",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "imports": {
+    "#features": "./src/features/index.ts",
+    "#features/*": "./src/features/*",
+    "#shared/*": "./src/shared/*"
+  },
   "scripts": {
     "start": "expo start --clear",
     "reset-project": "node ./scripts/reset-project.js",
