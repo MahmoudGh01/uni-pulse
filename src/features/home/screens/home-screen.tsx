@@ -1,15 +1,11 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, TextInput, View } from 'react-native';
+
+import { foundations, elements, layout } from '#design';
+
+const { colors, radius, spacing, typography } = foundations;
+const { Button, Card, Chip, TextField, Typography } = elements;
+const { Screen, Section, Stack } = layout;
 
 type EventCategory = 'All' | 'Campus' | 'City' | 'Club';
 
@@ -44,32 +40,28 @@ function Header({
   onQueryChange: (value: string) => void;
 }) {
   return (
-    <View style={headerStyles.container}>
-      <View>
-        <Text style={headerStyles.title}>UniPulse</Text>
-        <Text style={headerStyles.subtitle}>Campus + city events with slightly chaotic energy</Text>
-      </View>
+    <Card tone="muted">
+      <Stack gap="sm">
+        <View>
+          <Typography variant="hero">UniPulse</Typography>
+          <Typography variant="subtitle">
+            Campus + city events with slightly chaotic energy
+          </Typography>
+        </View>
 
-      <View style={headerStyles.statusRow}>
-        <Text style={headerStyles.savedCounter}>Saved: {savedCount}</Text>
-        <Pressable
-          onPress={() => searchInputRef.current?.focus()}
-          style={headerStyles.focusButton}
-          android_ripple={{ color: '#123f4a' }}
-        >
-          <Text style={headerStyles.focusButtonText}>Focus search</Text>
-        </Pressable>
-      </View>
+        <View style={headerStyles.statusRow}>
+          <Typography style={headerStyles.savedCounter}>Saved: {savedCount}</Typography>
+          <Button label="Focus search" onPress={() => searchInputRef.current?.focus()} />
+        </View>
 
-      <TextInput
-        ref={searchInputRef}
-        value={query}
-        onChangeText={onQueryChange}
-        placeholder="Search events"
-        placeholderTextColor="#5d7477"
-        style={headerStyles.searchInput}
-      />
-    </View>
+        <TextField
+          inputRef={searchInputRef}
+          value={query}
+          onChangeText={onQueryChange}
+          placeholder="Search events"
+        />
+      </Stack>
+    </Card>
   );
 }
 
@@ -81,13 +73,13 @@ function EventFlasher({
   onPanicPress: () => void;
 }) {
   return (
-    <View style={flasherStyles.container}>
-      <Text style={flasherStyles.label}>Live Chaos Feed</Text>
-      <Text style={flasherStyles.message}>{panicMessage}</Text>
-      <TouchableOpacity style={flasherStyles.button} onPress={onPanicPress}>
-        <Text style={flasherStyles.buttonText}>Panic Button</Text>
-      </TouchableOpacity>
-    </View>
+    <Card tone="warning">
+      <Typography variant="overline">Live Chaos Feed</Typography>
+      <Typography variant="bodyStrong" style={flasherStyles.message}>
+        {panicMessage}
+      </Typography>
+      <Button label="Panic Button" variant="warning" onPress={onPanicPress} />
+    </Card>
   );
 }
 
@@ -113,17 +105,12 @@ function EventFeed({
           const selected = selectedCategory === category;
 
           return (
-            <TouchableOpacity
+            <Chip
               key={category}
-              style={[feedStyles.filterPill, selected && feedStyles.filterPillActive]}
+              label={category}
+              selected={selected}
               onPress={() => onCategoryChange(category)}
-            >
-              <Text
-                style={[feedStyles.filterPillText, selected && feedStyles.filterPillTextActive]}
-              >
-                {category}
-              </Text>
-            </TouchableOpacity>
+            />
           );
         })}
       </View>
@@ -132,29 +119,30 @@ function EventFeed({
         data={events}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={feedStyles.listContent}
-        ListEmptyComponent={<Text style={feedStyles.emptyText}>No events match this filter.</Text>}
+        ListEmptyComponent={
+          <Typography style={feedStyles.emptyText}>No events match this filter.</Typography>
+        }
         renderItem={({ item }) => {
           const isSaved = savedIds.has(item.id);
 
           return (
-            <View style={feedStyles.card}>
+            <Card style={feedStyles.card}>
               <View style={feedStyles.cardTopRow}>
-                <Text style={feedStyles.cardTitle}>{item.title}</Text>
-                <Text style={feedStyles.badge}>{item.category}</Text>
+                <Typography variant="bodyStrong" style={feedStyles.cardTitle}>
+                  {item.title}
+                </Typography>
+                <Typography style={feedStyles.badge}>{item.category}</Typography>
               </View>
 
-              <Text style={feedStyles.metaText}>{item.location}</Text>
-              <Text style={feedStyles.metaText}>Starts in {item.startsIn}</Text>
+              <Typography variant="caption">{item.location}</Typography>
+              <Typography variant="caption">Starts in {item.startsIn}</Typography>
 
-              <TouchableOpacity
-                style={[feedStyles.saveButton, isSaved && feedStyles.saveButtonSaved]}
+              <Button
+                label={isSaved ? 'Saved' : 'Save for later'}
+                variant={isSaved ? 'success' : 'primary'}
                 onPress={() => onToggleSave(item.id)}
-              >
-                <Text style={feedStyles.saveButtonText}>
-                  {isSaved ? 'Saved' : 'Save for later'}
-                </Text>
-              </TouchableOpacity>
-            </View>
+              />
+            </Card>
           );
         }}
       />
@@ -244,8 +232,8 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={screenStyles.safeArea}>
-      <View style={screenStyles.screen}>
+    <Screen>
+      <Section style={screenStyles.screen}>
         <Header
           savedCount={savedIds.size}
           searchInputRef={searchInputRef}
@@ -257,8 +245,10 @@ export default function HomeScreen() {
 
         {isLoading ? (
           <View style={screenStyles.loaderWrap}>
-            <ActivityIndicator size="large" color="#1f7a8c" />
-            <Text style={screenStyles.loaderText}>Summoning events from the internet...</Text>
+            <ActivityIndicator size="large" color={colors.primary} />
+            <Typography style={screenStyles.loaderText}>
+              Summoning events from the internet...
+            </Typography>
           </View>
         ) : (
           <EventFeed
@@ -269,113 +259,43 @@ export default function HomeScreen() {
             onToggleSave={handleToggleSave}
           />
         )}
-      </View>
-    </SafeAreaView>
+      </Section>
+    </Screen>
   );
 }
 
 const screenStyles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#f4f7f7',
-  },
   screen: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    gap: 12,
+    gap: spacing.md,
   },
   loaderWrap: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 10,
+    gap: spacing.sm,
   },
   loaderText: {
-    fontSize: 14,
-    color: '#2f4a4f',
+    ...typography.body,
   },
 });
 
 const headerStyles = StyleSheet.create({
-  container: {
-    backgroundColor: '#e7f4f6',
-    borderRadius: 16,
-    padding: 14,
-    gap: 10,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: '800',
-    color: '#0f1720',
-  },
-  subtitle: {
-    marginTop: 4,
-    fontSize: 14,
-    color: '#30484c',
-  },
   statusRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   savedCounter: {
-    fontSize: 14,
-    color: '#22393d',
+    ...typography.button,
+    color: colors.text,
     fontWeight: '700',
-  },
-  focusButton: {
-    backgroundColor: '#1f7a8c',
-    borderRadius: 999,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-  },
-  focusButtonText: {
-    color: '#f8fbfb',
-    fontWeight: '700',
-  },
-  searchInput: {
-    backgroundColor: '#ffffff',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#bed0d3',
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    color: '#162224',
   },
 });
 
 const flasherStyles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff5df',
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: '#f5d48f',
-    padding: 12,
-    gap: 8,
-  },
-  label: {
-    fontSize: 12,
-    textTransform: 'uppercase',
-    letterSpacing: 0.6,
-    fontWeight: '800',
-    color: '#7a4d00',
-  },
   message: {
-    fontSize: 15,
-    color: '#3a2a00',
-    fontWeight: '600',
-  },
-  button: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#f97316',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  buttonText: {
-    color: '#fff7ed',
-    fontWeight: '800',
+    color: colors.warningText,
   },
 });
 
@@ -385,84 +305,35 @@ const feedStyles = StyleSheet.create({
   },
   filterRow: {
     flexDirection: 'row',
-    gap: 8,
-    marginBottom: 10,
-  },
-  filterPill: {
-    borderWidth: 1,
-    borderColor: '#b6c7ca',
-    borderRadius: 999,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    backgroundColor: '#ffffff',
-  },
-  filterPillActive: {
-    backgroundColor: '#1f7a8c',
-    borderColor: '#1f7a8c',
-  },
-  filterPillText: {
-    color: '#26464c',
-    fontWeight: '700',
-  },
-  filterPillTextActive: {
-    color: '#eff9fa',
+    gap: spacing.sm,
+    marginBottom: spacing.sm,
   },
   listContent: {
-    paddingBottom: 20,
-    gap: 10,
+    paddingBottom: spacing.xl,
+    gap: spacing.sm,
   },
   card: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: '#dde8ea',
-    gap: 8,
+    gap: spacing.sm,
   },
   cardTopRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 8,
+    gap: spacing.sm,
   },
   cardTitle: {
-    fontSize: 16,
-    color: '#132125',
-    fontWeight: '700',
     flex: 1,
   },
   badge: {
-    fontSize: 12,
-    color: '#10444f',
-    backgroundColor: '#dff3f7',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 999,
+    ...typography.chip,
+    color: colors.primaryStrong,
+    backgroundColor: colors.infoSurface,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.pill,
     overflow: 'hidden',
-    fontWeight: '700',
-  },
-  metaText: {
-    color: '#3f565b',
-    fontSize: 13,
-  },
-  saveButton: {
-    marginTop: 4,
-    alignSelf: 'flex-start',
-    backgroundColor: '#215f7f',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 7,
-  },
-  saveButtonSaved: {
-    backgroundColor: '#24855a',
-  },
-  saveButtonText: {
-    color: '#f4fbff',
-    fontWeight: '700',
   },
   emptyText: {
     textAlign: 'center',
-    marginTop: 30,
-    color: '#445f65',
-    fontSize: 15,
+    marginTop: spacing.x2,
   },
 });

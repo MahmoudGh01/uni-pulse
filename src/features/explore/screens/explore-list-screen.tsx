@@ -1,75 +1,53 @@
 import { Link, Stack } from 'expo-router';
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
+
+import { foundations, elements, layout } from '#design';
 
 import { featuredEvents } from '#shared/events';
 
+const { spacing } = foundations;
+const { Card, Typography } = elements;
+const { Screen, Section, Stack: LayoutStack } = layout;
+
 export default function ExploreListScreen() {
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <Screen>
       <Stack.Screen options={{ title: 'Explore Events' }} />
 
-      <View style={styles.container}>
-        <Text style={styles.heading}>Trending this week</Text>
-        <Text style={styles.subheading}>Pick an event to open a nested details screen.</Text>
+      <Section style={styles.container}>
+        <Typography variant="title">Trending this week</Typography>
+        <Typography variant="subtitle" style={styles.subheading}>
+          Pick an event to open a nested details screen.
+        </Typography>
 
-        <View style={styles.list}>
+        <LayoutStack gap="sm">
           {featuredEvents.map((event) => (
             <Link key={event.id} href={`./${event.id}`} asChild>
-              <Pressable style={styles.card}>
-                <Text style={styles.cardTitle}>{event.title}</Text>
-                <Text style={styles.cardMeta}>{event.venue}</Text>
-                <Text style={styles.cardCta}>View details</Text>
+              <Pressable>
+                <Card>
+                  <Typography variant="bodyStrong">{event.title}</Typography>
+                  <Typography variant="body">{event.venue}</Typography>
+                  <Typography style={styles.cardCta}>View details</Typography>
+                </Card>
               </Pressable>
             </Link>
           ))}
-        </View>
-      </View>
-    </SafeAreaView>
+        </LayoutStack>
+      </Section>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#f6f8fa',
-  },
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 14,
-  },
-  heading: {
-    fontSize: 28,
-    fontWeight: '800',
-    color: '#0f1720',
+    gap: spacing.sm,
   },
   subheading: {
-    marginTop: 6,
-    marginBottom: 14,
-    fontSize: 14,
-    color: '#41505b',
-  },
-  list: {
-    gap: 10,
-  },
-  card: {
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: '#d3dde5',
-    backgroundColor: '#ffffff',
-    padding: 12,
-    gap: 4,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#17232c',
-  },
-  cardMeta: {
-    color: '#4a5a66',
+    marginBottom: spacing.sm,
   },
   cardCta: {
-    marginTop: 2,
+    marginTop: spacing.xs,
     color: '#0067c0',
     fontWeight: '700',
   },

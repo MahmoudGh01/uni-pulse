@@ -5,6 +5,8 @@
   "imports": {
     "#features": "./src/features/index.ts",
     "#features/*": "./src/features/*",
+    "#design": "./src/shared/design/index.ts",
+    "#design/*": "./src/shared/design/*",
     "#shared/*": "./src/shared/*"
   },
   "scripts": {
