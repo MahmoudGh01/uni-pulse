@@ -1,0 +1,32 @@
+export const palette = {
+  slate900: '#132228',
+  slate700: '#30444d',
+  slate500: '#5b7078',
+  slate200: '#d7e0e4',
+  slate100: '#e9eff2',
+  white: '#ffffff',
+  teal700: '#166677',
+  teal600: '#1f7a8c',
+  teal100: '#dff3f7',
+  amber700: '#8a5600',
+  amber100: '#fff4d7',
+  orange600: '#f97316',
+  emerald600: '#24855a',
+} as const;
+
+export const colors = {
+  screen: '#f4f7f7',
+  surface: palette.white,
+  surfaceMuted: palette.slate100,
+  border: palette.slate200,
+  text: palette.slate900,
+  textMuted: palette.slate700,
+  primary: palette.teal600,
+  primaryStrong: palette.teal700,
+  onPrimary: '#f3fdff',
+  warningSurface: palette.amber100,
+  warningText: palette.amber700,
+  warningAction: palette.orange600,
+  success: palette.emerald600,
+  infoSurface: palette.teal100,
+} as const;

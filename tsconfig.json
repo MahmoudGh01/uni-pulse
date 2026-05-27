@@ -6,6 +6,8 @@
       "@/*": ["./*"],
       "#features": ["./src/features/index"],
       "#features/*": ["./src/features/*"],
+      "#design": ["./src/shared/design/index"],
+      "#design/*": ["./src/shared/design/*"],
       "#shared/*": ["./src/shared/*"]
     }
   },
