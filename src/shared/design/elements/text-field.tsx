@@ -8,7 +8,10 @@ export type TextFieldProps = {
   onChangeText: (value: string) => void;
   placeholder: string;
   inputRef?: RefObject<TextInput | null>;
-} & Pick<TextInputProps, 'autoCapitalize' | 'autoCorrect' | 'returnKeyType'>;
+} & Pick<
+  TextInputProps,
+  'autoCapitalize' | 'autoCorrect' | 'returnKeyType' | 'keyboardType' | 'inputMode'
+>;
 
 export function TextField({
   value,
@@ -18,6 +21,8 @@ export function TextField({
   autoCapitalize = 'none',
   autoCorrect = false,
   returnKeyType = 'search',
+  keyboardType,
+  inputMode,
 }: TextFieldProps) {
   return (
     <TextInput
@@ -30,6 +35,8 @@ export function TextField({
       autoCapitalize={autoCapitalize}
       autoCorrect={autoCorrect}
       returnKeyType={returnKeyType}
+      keyboardType={keyboardType}
+      inputMode={inputMode}
     />
   );
 }
