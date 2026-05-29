@@ -3,6 +3,8 @@ import { ActivityIndicator, FlatList, StyleSheet, TextInput, View } from 'react-
 
 import { foundations, elements, layout } from '#design';
 
+import { usePersistedSavedEvents } from '../hooks/use-persisted-saved-events';
+
 const { colors, radius, spacing, typography } = foundations;
 const { Button, Card, Chip, TextField, Typography } = elements;
 const { Screen, Section, Stack } = layout;
@@ -157,8 +159,8 @@ export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<EventCategory>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [savedIds, setSavedIds] = useState<Set<number>>(new Set());
   const [panicMessage, setPanicMessage] = useState<string>(panicMessages[0]);
+  const { savedIds, isHydrating, toggleSaved } = usePersistedSavedEvents();
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -214,18 +216,6 @@ export default function HomeScreen() {
     });
   }, [events, searchQuery, selectedCategory]);
 
-  const handleToggleSave = (eventId: number) => {
-    setSavedIds((previous) => {
-      const next = new Set(previous);
-      if (next.has(eventId)) {
-        next.delete(eventId);
-      } else {
-        next.add(eventId);
-      }
-      return next;
-    });
-  };
-
   const handlePanicPress = () => {
     const randomIndex = Math.floor(Math.random() * panicMessages.length);
     setPanicMessage(panicMessages[randomIndex]);
@@ -243,12 +233,10 @@ export default function HomeScreen() {
 
         <EventFlasher panicMessage={panicMessage} onPanicPress={handlePanicPress} />
 
-        {isLoading ? (
+        {isLoading || isHydrating ? (
           <View style={screenStyles.loaderWrap}>
             <ActivityIndicator size="large" color={colors.primary} />
-            <Typography style={screenStyles.loaderText}>
-              Summoning events from the internet...
-            </Typography>
+            <Typography style={screenStyles.loaderText}>Loading your event feed...</Typography>
           </View>
         ) : (
           <EventFeed
@@ -256,7 +244,7 @@ export default function HomeScreen() {
             selectedCategory={selectedCategory}
             onCategoryChange={setSelectedCategory}
             savedIds={savedIds}
-            onToggleSave={handleToggleSave}
+            onToggleSave={toggleSaved}
           />
         )}
       </Section>
