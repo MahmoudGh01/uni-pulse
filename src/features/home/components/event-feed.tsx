@@ -9,6 +9,10 @@ const { Button, Card, Chip, Typography } = elements;
 
 export type EventFeedProps = {
   events: UniEvent[];
+  hasMore: boolean;
+  isRefreshing: boolean;
+  onRefresh: () => void;
+  onEndReached: () => void;
   selectedCategory: EventCategory;
   onCategoryChange: (category: EventCategory) => void;
   savedIds: Set<number>;
@@ -17,6 +21,10 @@ export type EventFeedProps = {
 
 export function EventFeed({
   events,
+  hasMore,
+  isRefreshing,
+  onRefresh,
+  onEndReached,
   selectedCategory,
   onCategoryChange,
   savedIds,
@@ -44,9 +52,20 @@ export function EventFeed({
       <FlatList
         data={events}
         keyExtractor={(item) => item.id.toString()}
+        refreshing={isRefreshing}
+        onRefresh={onRefresh}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.4}
         contentContainerStyle={styles.listContent}
         ListEmptyComponent={
           <Typography style={styles.emptyText}>No events match this filter.</Typography>
+        }
+        ListFooterComponent={
+          hasMore ? (
+            <Typography variant="caption" style={styles.footerText}>
+              Scroll for more events
+            </Typography>
+          ) : null
         }
         renderItem={({ item }) => {
           const isSaved = savedIds.has(item.id);
@@ -112,5 +131,10 @@ const styles = StyleSheet.create({
   emptyText: {
     textAlign: 'center',
     marginTop: spacing.x2,
+  },
+  footerText: {
+    textAlign: 'center',
+    marginTop: spacing.sm,
+    marginBottom: spacing.sm,
   },
 });

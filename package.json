@@ -15,7 +15,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest",
+    "test": "jest --watchAll",
     "lint": "npm run lint:typecheck && npm run lint:eslint && npm run lint:prettier",
     "lint:typecheck": "tsc --noEmit",
     "lint:eslint": "eslint .",

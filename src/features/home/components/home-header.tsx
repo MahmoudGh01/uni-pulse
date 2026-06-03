@@ -1,4 +1,4 @@
-import { type RefObject } from 'react';
+import { type RefObject, useState } from 'react';
 import { StyleSheet, Switch, TextInput, View } from 'react-native';
 
 import { foundations, elements, layout } from '#design';
@@ -20,8 +20,6 @@ export type HomeHeaderProps = {
   onPreferredLocationChange: (value: string) => void;
   savedOnly: boolean;
   onSavedOnlyChange: (value: boolean) => void;
-  quietMode: boolean;
-  onQuietModeChange: (value: boolean) => void;
 };
 
 export function HomeHeader({
@@ -35,60 +33,75 @@ export function HomeHeader({
   onPreferredLocationChange,
   savedOnly,
   onSavedOnlyChange,
-  quietMode,
-  onQuietModeChange,
 }: HomeHeaderProps) {
+  const [isExpanded, setIsExpanded] = useState(true);
+
   return (
     <Card tone="muted">
       <Stack gap="sm">
-        <View>
-          <Typography variant="hero">UniPulse</Typography>
-          <Typography variant="subtitle">{formatWelcome(displayName)}</Typography>
+        <View style={styles.headerRow}>
+          <View style={styles.headerTextWrap}>
+            <Typography variant="hero">UniPulse</Typography>
+            <Typography variant="subtitle">{formatWelcome(displayName)}</Typography>
+          </View>
+          <Button
+            label={isExpanded ? 'Hide Search' : 'Show Search'}
+            variant="ghost"
+            onPress={() => setIsExpanded((previousState) => !previousState)}
+          />
         </View>
 
-        <TextField
-          value={displayName}
-          onChangeText={onDisplayNameChange}
-          placeholder="Your name"
-          autoCapitalize="words"
-          returnKeyType="next"
-        />
+        {isExpanded ? (
+          <>
+            <TextField
+              value={displayName}
+              onChangeText={onDisplayNameChange}
+              placeholder="Your name"
+              autoCapitalize="words"
+              returnKeyType="next"
+            />
 
-        <TextField
-          value={preferredLocation}
-          onChangeText={onPreferredLocationChange}
-          placeholder="Preferred location"
-          autoCapitalize="words"
-          returnKeyType="next"
-        />
+            <TextField
+              value={preferredLocation}
+              onChangeText={onPreferredLocationChange}
+              placeholder="Preferred location"
+              autoCapitalize="words"
+              returnKeyType="next"
+            />
 
-        <View style={styles.statusRow}>
-          <Typography style={styles.savedCounter}>Saved: {savedCount}</Typography>
-          <Button label="Focus search" onPress={() => searchInputRef.current?.focus()} />
-        </View>
+            <View style={styles.statusRow}>
+              <Typography style={styles.savedCounter}>Saved: {savedCount}</Typography>
+              <Button label="Focus search" onPress={() => searchInputRef.current?.focus()} />
+            </View>
 
-        <View style={styles.toggleRow}>
-          <Typography style={styles.toggleLabel}>Saved only</Typography>
-          <Switch value={savedOnly} onValueChange={onSavedOnlyChange} />
-        </View>
+            <View style={styles.toggleRow}>
+              <Typography style={styles.toggleLabel}>Saved only</Typography>
+              <Switch value={savedOnly} onValueChange={onSavedOnlyChange} />
+            </View>
 
-        <View style={styles.toggleRow}>
-          <Typography style={styles.toggleLabel}>Quiet mode</Typography>
-          <Switch value={quietMode} onValueChange={onQuietModeChange} />
-        </View>
-
-        <TextField
-          inputRef={searchInputRef}
-          value={query}
-          onChangeText={onQueryChange}
-          placeholder="Search events"
-        />
+            <TextField
+              inputRef={searchInputRef}
+              value={query}
+              onChangeText={onQueryChange}
+              placeholder="Search events"
+            />
+          </>
+        ) : null}
       </Stack>
     </Card>
   );
 }
 
 const styles = StyleSheet.create({
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  headerTextWrap: {
+    flex: 1,
+  },
   statusRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',

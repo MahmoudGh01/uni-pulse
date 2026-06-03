@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   type HomePreferences,
@@ -30,6 +30,7 @@ const panicMessages = [
 export function useHomeScreenModel() {
   const [events, setEvents] = useState<UniEvent[]>([]);
   const [isEventsLoading, setIsEventsLoading] = useState<boolean>(true);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<EventCategory>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [panicMessage, setPanicMessage] = useState<string>(panicMessages[0]);
@@ -44,45 +45,55 @@ export function useHomeScreenModel() {
     setQuietMode,
   } = usePersistedHomePreferences();
 
-  useEffect(() => {
-    const loadEvents = async () => {
-      try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=12');
-        const payload: { id: number; title: string }[] = await response.json();
+  const loadEvents = useCallback(async (refresh: boolean = false) => {
+    if (refresh) {
+      setIsRefreshing(true);
+    } else {
+      setIsEventsLoading(true);
+    }
 
-        const mappedEvents: UniEvent[] = payload.map((item, index) => ({
-          id: item.id,
-          title: item.title.replace(/(^\w|\s\w)/g, (char) => char.toUpperCase()),
-          category: categoryOrder[index % categoryOrder.length],
-          location: locations[index % locations.length],
-          startsIn: timings[index % timings.length],
-        }));
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=12');
+      const payload: { id: number; title: string }[] = await response.json();
 
-        setEvents(mappedEvents);
-      } catch {
-        setEvents([
-          {
-            id: 101,
-            title: 'Open Mic Night at Student Union',
-            category: 'Campus',
-            location: 'Union Lawn',
-            startsIn: '45 mins',
-          },
-          {
-            id: 102,
-            title: 'Midnight Food Truck Rally',
-            category: 'City',
-            location: 'Downtown Stage',
-            startsIn: '20 mins',
-          },
-        ]);
-      } finally {
+      const mappedEvents: UniEvent[] = payload.map((item, index) => ({
+        id: item.id,
+        title: item.title.replace(/(^\w|\s\w)/g, (char) => char.toUpperCase()),
+        category: categoryOrder[index % categoryOrder.length],
+        location: locations[index % locations.length],
+        startsIn: timings[index % timings.length],
+      }));
+
+      setEvents(mappedEvents);
+    } catch {
+      setEvents([
+        {
+          id: 101,
+          title: 'Open Mic Night at Student Union',
+          category: 'Campus',
+          location: 'Union Lawn',
+          startsIn: '45 mins',
+        },
+        {
+          id: 102,
+          title: 'Midnight Food Truck Rally',
+          category: 'City',
+          location: 'Downtown Stage',
+          startsIn: '20 mins',
+        },
+      ]);
+    } finally {
+      if (refresh) {
+        setIsRefreshing(false);
+      } else {
         setIsEventsLoading(false);
       }
-    };
-
-    void loadEvents();
+    }
   }, []);
+
+  useEffect(() => {
+    void loadEvents();
+  }, [loadEvents]);
 
   const filteredEvents = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -119,16 +130,19 @@ export function useHomeScreenModel() {
   };
 
   const isHydrating = isSavedHydrating || isPreferencesHydrating;
+  const refreshEvents = () => loadEvents(true);
 
   return {
     events: filteredEvents,
     isLoading: isEventsLoading || isHydrating,
+    isRefreshing,
     searchQuery,
     setSearchQuery,
     selectedCategory,
     setSelectedCategory,
     savedIds,
     toggleSaved,
+    refreshEvents,
     panicMessage,
     handlePanicPress,
     preferences,

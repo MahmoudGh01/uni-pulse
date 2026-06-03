@@ -1,10 +1,9 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { ActivityIndicator, StyleSheet, TextInput, View } from 'react-native';
 
 import { foundations, elements, layout } from '#design';
 
 import { EventFeed } from '../components/event-feed';
-import { EventFlasher } from '../components/event-flasher';
 import { HomeHeader } from '../components/home-header';
 import { useHomeScreenModel } from '../hooks/use-home-screen-model';
 
@@ -13,24 +12,43 @@ const { Typography } = elements;
 const { Screen, Section } = layout;
 
 export default function HomeScreen() {
+  const initialVisibleCount = 6;
   const searchInputRef = useRef<TextInput | null>(null);
   const {
     events,
     isLoading,
+    isRefreshing,
+    refreshEvents,
     selectedCategory,
     setSelectedCategory,
     searchQuery,
     setSearchQuery,
     savedIds,
     toggleSaved,
-    panicMessage,
-    handlePanicPress,
     preferences,
     setDisplayName,
     setPreferredLocation,
     setSavedOnly,
-    setQuietMode,
   } = useHomeScreenModel();
+
+  const [visibleCount, setVisibleCount] = useState(initialVisibleCount);
+  const visibleEvents = events.slice(0, visibleCount);
+  const hasMore = visibleCount < events.length;
+
+  const handleLoadMore = () => {
+    if (!hasMore) {
+      return;
+    }
+
+    setVisibleCount((previousCount) =>
+      Math.min(previousCount + initialVisibleCount, events.length),
+    );
+  };
+
+  const handleRefresh = () => {
+    setVisibleCount(initialVisibleCount);
+    refreshEvents();
+  };
 
   return (
     <Screen>
@@ -46,11 +64,7 @@ export default function HomeScreen() {
           onPreferredLocationChange={setPreferredLocation}
           savedOnly={preferences.savedOnly}
           onSavedOnlyChange={setSavedOnly}
-          quietMode={preferences.quietMode}
-          onQuietModeChange={setQuietMode}
         />
-
-        <EventFlasher panicMessage={panicMessage} onPanicPress={handlePanicPress} />
 
         {isLoading ? (
           <View style={screenStyles.loaderWrap}>
@@ -59,7 +73,11 @@ export default function HomeScreen() {
           </View>
         ) : (
           <EventFeed
-            events={events}
+            events={visibleEvents}
+            hasMore={hasMore}
+            isRefreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            onEndReached={handleLoadMore}
             selectedCategory={selectedCategory}
             onCategoryChange={setSelectedCategory}
             savedIds={savedIds}

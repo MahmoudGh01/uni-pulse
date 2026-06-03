@@ -11,7 +11,7 @@ describe('Typography', () => {
 
   it('renders link-like text when href is provided (unit)', () => {
     const { getByText } = render(
-      <Typography href="/explore" variant="bodyStrong">
+      <Typography href="./explore" variant="bodyStrong">
         Explore
       </Typography>,
     );
