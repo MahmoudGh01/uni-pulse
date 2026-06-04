@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "uni-pulse",
-    "slug": "uni-pulse",
+    "slug": "unipulse",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -43,6 +43,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "f97ef32d-9cdf-46ed-ae64-b00193a60730"
+      }
+    },
+    "owner": "mahmoudgharbi"
   }
 }

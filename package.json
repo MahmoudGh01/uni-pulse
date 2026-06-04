@@ -16,10 +16,13 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
+    "test:ci": "jest --coverage",
     "lint": "npm run lint:typecheck && npm run lint:eslint && npm run lint:prettier",
     "lint:typecheck": "tsc --noEmit",
     "lint:eslint": "eslint .",
-    "lint:prettier": "prettier --check ."
+    "lint:prettier": "prettier --check .",
+    "fix:prettier": "prettier --write .",
+    "build": "eas build --platform android --non-interactive --no-wait"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -54,6 +57,7 @@
     "@testing-library/react-native": "^13.2.0",
     "@types/jest": "^29.5.14",
     "@types/react": "~19.1.0",
+    "eas-cli": "^20.0.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
     "jest": "^29.7.0",
