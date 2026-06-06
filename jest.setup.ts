@@ -1,4 +1,4 @@
-import '@testing-library/jest-native/extend-expect';
+// Jest matchers are now built into @testing-library/react-native v12.4+
 
 jest.mock('expo-router', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
