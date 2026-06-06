@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 12,
+    gap: foundations.spacing.lg, // 16px gap
   },
   headerTextWrap: {
     flex: 1,
@@ -106,19 +106,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: foundations.spacing.sm, // 8px vertical padding
   },
   savedCounter: {
-    ...typography.button,
+    ...typography.bodyStrong,
     color: colors.text,
-    fontWeight: '700',
   },
   toggleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: foundations.spacing.sm, // 8px vertical padding
   },
   toggleLabel: {
-    ...typography.button,
+    ...typography.body,
     color: colors.text,
   },
 });

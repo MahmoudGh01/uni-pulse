@@ -2,47 +2,79 @@ import { type TextStyle } from 'react-native';
 
 import { colors } from './colors';
 
+// Apple-style typography with mathematical scaling
+// Base size: 16px (iOS standard)
+const baseSize = 16;
+
 export const typography = {
+  // Large title (2x base) - 32px
   hero: {
-    fontSize: 30,
-    fontWeight: '800',
+    fontSize: baseSize * 2,
+    fontWeight: '700',
     color: colors.text,
   } satisfies TextStyle,
+
+  // Title (2x base) - 32px
   title: {
-    fontSize: 28,
-    fontWeight: '800',
+    fontSize: baseSize * 2,
+    fontWeight: '700',
     color: colors.text,
   } satisfies TextStyle,
-  subtitle: {
-    fontSize: 15,
-    color: colors.textMuted,
+
+  // Large text (1.25x base) - 20px
+  large: {
+    fontSize: baseSize * 1.25,
+    fontWeight: '600',
+    color: colors.text,
   } satisfies TextStyle,
+
+  // Body text (1x base) - 16px
   body: {
-    fontSize: 15,
+    fontSize: baseSize,
+    color: colors.text,
+  } satisfies TextStyle,
+
+  // Body strong (1x base, bold) - 16px
+  bodyStrong: {
+    fontSize: baseSize,
+    fontWeight: '600',
+    color: colors.text,
+  } satisfies TextStyle,
+
+  // Subtitle/secondary text (1x base, muted) - 16px
+  subtitle: {
+    fontSize: baseSize,
     color: colors.textMuted,
   } satisfies TextStyle,
-  bodyStrong: {
-    fontSize: 15,
+
+  // Muted text (1x base, muted) - 16px
+  muted: {
+    fontSize: baseSize,
+    color: colors.textMuted,
+  } satisfies TextStyle,
+
+  // Caption (0.875x base) - 14px
+  caption: {
+    fontSize: baseSize * 0.875,
+    color: colors.textMuted,
+  } satisfies TextStyle,
+
+  // Label (0.875x base, bold) - 14px
+  label: {
+    fontSize: baseSize * 0.875,
     fontWeight: '700',
     color: colors.text,
   } satisfies TextStyle,
-  caption: {
-    fontSize: 13,
-    color: colors.textMuted,
-  } satisfies TextStyle,
-  overline: {
-    fontSize: 12,
-    textTransform: 'uppercase',
-    letterSpacing: 0.6,
-    fontWeight: '800',
-    color: colors.warningText,
-  } satisfies TextStyle,
+
+  // Button text - 16px
   button: {
-    fontSize: 14,
-    fontWeight: '700',
+    fontSize: baseSize,
+    fontWeight: '600',
   } satisfies TextStyle,
+
+  // Chip text (0.875x base, bold) - 14px
   chip: {
-    fontSize: 12,
-    fontWeight: '700',
+    fontSize: baseSize * 0.875,
+    fontWeight: '600',
   } satisfies TextStyle,
 } as const;

@@ -3,7 +3,7 @@ import { type StyleProp, Pressable, StyleSheet, type ViewStyle } from 'react-nat
 import { colors, radius, spacing, typography } from '../foundations';
 import { Typography } from './typography';
 
-type ButtonVariant = 'primary' | 'warning' | 'success' | 'ghost';
+type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'ghost';
 
 export type ButtonProps = {
   label: string;
@@ -12,18 +12,22 @@ export type ButtonProps = {
   variant?: ButtonVariant;
 };
 
+// Apple-style button variants with clean, bold colors
 const variantStyles: Record<ButtonVariant, ViewStyle> = {
   primary: {
-    backgroundColor: colors.primaryStrong,
+    backgroundColor: colors.primary, // iOS blue
   },
-  warning: {
-    backgroundColor: colors.warningAction,
+  secondary: {
+    backgroundColor: colors.textMuted, // Gray
   },
   success: {
-    backgroundColor: colors.success,
+    backgroundColor: colors.success, // Green
+  },
+  danger: {
+    backgroundColor: colors.error, // Red
   },
   ghost: {
-    backgroundColor: colors.surface,
+    backgroundColor: 'transparent',
     borderColor: colors.border,
     borderWidth: 1,
   },
@@ -31,9 +35,10 @@ const variantStyles: Record<ButtonVariant, ViewStyle> = {
 
 const labelColor: Record<ButtonVariant, string> = {
   primary: colors.onPrimary,
-  warning: '#fff7ed',
-  success: '#ecfdf3',
-  ghost: colors.textMuted,
+  secondary: colors.onPrimary,
+  success: colors.onPrimary,
+  danger: colors.onPrimary,
+  ghost: colors.primary,
 };
 
 export function Button({ label, onPress, style, variant = 'primary' }: ButtonProps) {
@@ -46,10 +51,13 @@ export function Button({ label, onPress, style, variant = 'primary' }: ButtonPro
 
 const styles = StyleSheet.create({
   base: {
-    alignSelf: 'flex-start',
-    borderRadius: radius.sm,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    alignSelf: 'center',
+    borderRadius: radius.sm, // 12px rounded corners
+    paddingHorizontal: spacing.x2, // 24px horizontal padding
+    paddingVertical: spacing.md, // 12px vertical padding
+    minWidth: 120, // Minimum width for consistency
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   label: {
     ...typography.button,

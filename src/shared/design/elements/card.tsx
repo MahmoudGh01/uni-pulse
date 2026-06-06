@@ -2,7 +2,7 @@ import { type StyleProp, type ViewStyle, StyleSheet, View } from 'react-native';
 
 import { colors, radius, shadows, spacing } from '../foundations';
 
-type CardTone = 'default' | 'muted' | 'warning';
+type CardTone = 'default' | 'muted' | 'info' | 'warning';
 
 export type CardProps = {
   children: React.ReactNode;
@@ -10,18 +10,19 @@ export type CardProps = {
   tone?: CardTone;
 };
 
+// Apple-style card variants with clean backgrounds and subtle borders
 const toneStyles: Record<CardTone, ViewStyle> = {
   default: {
     backgroundColor: colors.surface,
-    borderColor: colors.border,
   },
   muted: {
     backgroundColor: colors.surfaceMuted,
-    borderColor: colors.border,
+  },
+  info: {
+    backgroundColor: colors.infoSurface,
   },
   warning: {
     backgroundColor: colors.warningSurface,
-    borderColor: '#f5d48f',
   },
 };
 
@@ -31,10 +32,9 @@ export function Card({ children, style, tone = 'default' }: CardProps) {
 
 const styles = StyleSheet.create({
   base: {
-    borderRadius: radius.md,
-    borderWidth: 1,
-    padding: spacing.md,
-    gap: spacing.sm,
-    ...shadows.card,
+    borderRadius: radius.lg, // 20px - Apple's signature rounded corners
+    padding: spacing.x2, // 24px - generous internal padding
+    gap: spacing.lg, // 16px - space between child elements
+    ...shadows.card, // Subtle elevation
   },
 });

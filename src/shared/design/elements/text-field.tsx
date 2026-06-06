@@ -1,7 +1,7 @@
 import { type RefObject } from 'react';
 import { StyleSheet, TextInput, type TextInputProps } from 'react-native';
 
-import { colors, palette, radius, spacing } from '../foundations';
+import { colors, radius, spacing, typography } from '../foundations';
 
 export type TextFieldProps = {
   value: string;
@@ -30,7 +30,7 @@ export function TextField({
       value={value}
       onChangeText={onChangeText}
       placeholder={placeholder}
-      placeholderTextColor={palette.slate500}
+      placeholderTextColor={colors.textMuted}
       style={styles.input}
       autoCapitalize={autoCapitalize}
       autoCorrect={autoCorrect}
@@ -43,12 +43,13 @@ export function TextField({
 
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: colors.surface,
-    borderRadius: radius.sm,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    backgroundColor: colors.surfaceMuted, // Light gray background
+    borderRadius: radius.sm, // 12px rounded corners
+    borderWidth: 0, // No border for cleaner Apple look
+    paddingHorizontal: spacing.lg, // 16px horizontal padding
+    paddingVertical: spacing.md, // 12px vertical padding
     color: colors.text,
+    fontSize: typography.body.fontSize, // 16px
+    fontWeight: '400',
   },
 });

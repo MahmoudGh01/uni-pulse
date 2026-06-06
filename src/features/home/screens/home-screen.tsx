@@ -92,15 +92,16 @@ export default function HomeScreen() {
 const screenStyles = StyleSheet.create({
   screen: {
     flex: 1,
-    gap: spacing.md,
+    gap: spacing.lg, // 16px gap between sections
   },
   loaderWrap: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.sm,
+    gap: spacing.lg, // 16px gap between spinner and text
   },
   loaderText: {
     ...typography.body,
+    color: colors.textMuted,
   },
 });

@@ -5,7 +5,7 @@ import { foundations, elements, layout } from '#design';
 
 import { featuredEvents } from '#shared/events';
 
-const { spacing } = foundations;
+const { colors, spacing } = foundations;
 const { Card, Typography } = elements;
 const { Screen, Section, Stack: LayoutStack } = layout;
 
@@ -16,18 +16,18 @@ export default function ExploreListScreen() {
 
       <Section style={styles.container}>
         <Typography variant="title">Trending this week</Typography>
-        <Typography variant="subtitle" style={styles.subheading}>
+        <Typography variant="muted" style={styles.subheading}>
           Pick an event to open a nested details screen.
         </Typography>
 
-        <LayoutStack gap="sm">
+        <LayoutStack gap="lg">
           {featuredEvents.map((event) => (
             <Link key={event.id} href={`./${event.id}`} asChild>
               <Pressable>
                 <Card>
-                  <Typography variant="bodyStrong">{event.title}</Typography>
+                  <Typography variant="large">{event.title}</Typography>
                   <Typography variant="body">{event.venue}</Typography>
-                  <Typography style={styles.cardCta}>View details</Typography>
+                  <Typography style={styles.cardCta}>View details →</Typography>
                 </Card>
               </Pressable>
             </Link>
@@ -41,14 +41,15 @@ export default function ExploreListScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: spacing.sm,
+    gap: spacing.lg, // 16px gap
   },
   subheading: {
-    marginBottom: spacing.sm,
+    marginBottom: spacing.md, // 12px bottom margin
   },
   cardCta: {
-    marginTop: spacing.xs,
-    color: '#0067c0',
-    fontWeight: '700',
+    marginTop: spacing.sm, // 8px top margin
+    color: colors.primary, // iOS blue
+    fontWeight: '600',
+    fontSize: 16,
   },
 });

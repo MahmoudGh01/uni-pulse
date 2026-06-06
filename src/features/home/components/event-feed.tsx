@@ -101,40 +101,45 @@ const styles = StyleSheet.create({
   },
   filterRow: {
     flexDirection: 'row',
-    gap: spacing.sm,
-    marginBottom: spacing.sm,
+    gap: spacing.sm, // 8px gap between chips
+    marginBottom: spacing.lg, // 16px bottom margin
+    flexWrap: 'wrap', // Wrap chips if needed
   },
   listContent: {
-    paddingBottom: spacing.xl,
-    gap: spacing.sm,
+    paddingBottom: spacing.x2, // 24px bottom padding
+    gap: spacing.lg, // 16px gap between cards
   },
   card: {
-    gap: spacing.sm,
+    gap: spacing.md, // 12px gap between card elements
   },
   cardTopRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: spacing.sm,
+    alignItems: 'flex-start',
+    gap: spacing.md, // 12px gap
   },
   cardTitle: {
     flex: 1,
   },
   badge: {
-    ...typography.chip,
-    color: colors.primaryStrong,
+    ...typography.label, // 14px, bold
+    color: colors.primary,
     backgroundColor: colors.infoSurface,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: radius.pill,
+    paddingHorizontal: spacing.md, // 12px horizontal padding
+    paddingVertical: spacing.xs, // 4px vertical padding
+    borderRadius: radius.pill, // Fully rounded
     overflow: 'hidden',
   },
   emptyText: {
+    ...typography.body,
+    color: colors.textMuted,
     textAlign: 'center',
-    marginTop: spacing.x2,
+    marginTop: spacing.x3, // 32px top margin
   },
   footerText: {
     textAlign: 'center',
-    marginTop: spacing.sm,
-    marginBottom: spacing.sm,
+    marginTop: spacing.lg, // 16px margins
+    marginBottom: spacing.lg,
+    color: colors.textMuted,
   },
 });

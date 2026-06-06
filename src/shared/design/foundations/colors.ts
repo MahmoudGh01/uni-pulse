@@ -1,32 +1,47 @@
+// Apple-inspired minimal color palette
 export const palette = {
-  slate900: '#132228',
-  slate700: '#30444d',
-  slate500: '#5b7078',
-  slate200: '#d7e0e4',
-  slate100: '#e9eff2',
+  // Core colors
   white: '#ffffff',
-  teal700: '#166677',
-  teal600: '#1f7a8c',
-  teal100: '#dff3f7',
-  amber700: '#8a5600',
-  amber100: '#fff4d7',
-  orange600: '#f97316',
-  emerald600: '#24855a',
+  black: '#000000',
+  gray: '#888888',
+
+  // iOS system blue (brand color)
+  blue: '#007aff',
+  blueLight: '#e5f3ff',
+
+  // Supporting colors for states
+  red: '#ff3b30',
+  green: '#34c759',
+  orange: '#ff9500',
+
+  // Shadow
+  shadowColor: 'rgba(0, 0, 0, 0.15)',
 } as const;
 
 export const colors = {
-  screen: '#f4f7f7',
+  // Screen & surfaces
+  screen: palette.white,
   surface: palette.white,
-  surfaceMuted: palette.slate100,
-  border: palette.slate200,
-  text: palette.slate900,
-  textMuted: palette.slate700,
-  primary: palette.teal600,
-  primaryStrong: palette.teal700,
-  onPrimary: '#f3fdff',
-  warningSurface: palette.amber100,
-  warningText: palette.amber700,
-  warningAction: palette.orange600,
-  success: palette.emerald600,
-  infoSurface: palette.teal100,
+  surfaceMuted: '#f5f5f5',
+  border: '#e5e5e5',
+
+  // Text
+  text: palette.black,
+  textMuted: palette.gray,
+
+  // Primary (iOS blue)
+  primary: palette.blue,
+  primaryStrong: '#0051d5',
+  onPrimary: palette.white,
+
+  // Status colors
+  warningSurface: '#fff4e5',
+  warningText: '#cc7a00',
+  warningAction: palette.orange,
+  success: palette.green,
+  error: palette.red,
+  infoSurface: palette.blueLight,
+
+  // Shadow
+  shadow: palette.shadowColor,
 } as const;

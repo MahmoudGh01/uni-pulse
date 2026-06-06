@@ -5,7 +5,7 @@ import { foundations, elements, layout } from '#design';
 
 import { featuredEventsById, type FeaturedEventId } from '#shared/events';
 
-const { spacing } = foundations;
+const { colors, spacing, typography } = foundations;
 const { Card, Typography } = elements;
 const { Screen, Section, Stack: LayoutStack } = layout;
 
@@ -22,7 +22,7 @@ export default function ExploreEventDetailsScreen() {
 
       <Section>
         <Card>
-          <LayoutStack gap="sm" style={styles.container}>
+          <LayoutStack gap="lg" style={styles.container}>
             <Typography variant="title">{title}</Typography>
             <Typography style={styles.time}>
               {detail?.time ?? 'Schedule to be announced'}
@@ -43,13 +43,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   time: {
-    color: '#2a4b60',
-    fontWeight: '700',
+    ...typography.label, // 14px, bold
+    color: colors.primary, // iOS blue
   },
   description: {
-    fontSize: 15,
-    lineHeight: 22,
-    color: '#304450',
-    marginTop: spacing.xs,
+    ...typography.body, // 16px
+    lineHeight: 24, // Slightly more generous line height
+    color: colors.text,
+    marginTop: spacing.sm, // 8px top margin
   },
 });
